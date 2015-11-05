@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @doubt.title %>
+</p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @doubt.body %>
+</p>
+
+<%= link_to 'Edit', edit_doubt_path(@doubt) %> |
+<%= link_to 'Back', doubts_path %>
