@@ -25,6 +25,9 @@ gem "mongoid", git: 'git://github.com/mongoid/mongoid.git'
 #Authentication gem to control de users access
 gem 'devise'
 
+#Slug for mongoid
+gem 'mongoid-slug'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

@@ -5,12 +5,17 @@ class DoubtsController < ApplicationController
   # GET /doubts.json
   def index
     @doubts = Doubt.all
-    
   end
 
   # GET /doubts/1
   # GET /doubts/1.json
   def show
+    @offer = Offer.new
+    if current_user == @doubt.user
+      @permission = false
+    else
+      @permission = true
+    end
   end
 
   # GET /doubts/new
@@ -25,7 +30,8 @@ class DoubtsController < ApplicationController
   # POST /doubts
   # POST /doubts.json
   def create
-    @doubt = Doubt.new(doubt_params)
+    @doubt = current_user.doubts.new(doubt_params)
+    @doubt.created_at = Time.now
 
     respond_to do |format|
       if @doubt.save

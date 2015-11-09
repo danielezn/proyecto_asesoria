@@ -7,8 +7,31 @@
 
 <p>
   <strong>Body:</strong>
-  <%= @doubt.body %>
+  <%= @doubt.body? %>
 </p>
 
 <%= link_to 'Edit', edit_doubt_path(@doubt) %> |
 <%= link_to 'Back', doubts_path %>
+
+<% if @doubt.offers? %>
+	<h1>Ofertas</h1>
+	<ul>
+		<% @doubt.offers.each do |offer| %>
+			<li>
+				<%= offer.user.username %> - <%=offer.created_at %> - <%= offer.price %> - <%= offer.description %>
+				<% if @doubt.user == current_user %>
+					<%= link_to 'Aceptar', accept_offer_path(offer) %>
+				<% end %>
+				<% if offer.user == current_user %>
+					<%= link_to 'Edit', edit_doubt_offer_path(@doubt,offer) %>
+	        		<%= link_to 'Destroy', doubt_offer_path(@doubt,offer), method: :delete, data: { confirm: 'Are you sure?' } %>
+				<% end %>
+			</li>
+		<%end%>
+	</ul>
+<% end %>
+
+<% if @permission == true %>
+	<h1>Ofertar</h1>
+	<%= render "offers/form" %>
+<% end %>

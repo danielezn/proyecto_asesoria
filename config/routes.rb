@@ -5,6 +5,13 @@ Rails.application.routes.draw do
 
   #Logged users
   devise_for :users
-  resources :doubts
+  
+  resources :doubts do
+  	resources :offers
+  end
+
+  post '/offers/:id', to: 'offer#accept_offer', as: 'accept_offer'
+  #initial Dashboard
+  get '/dashboard', to: 'dashboard#index', as: 'dashboard'
 
 end

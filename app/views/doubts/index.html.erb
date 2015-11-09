@@ -5,7 +5,9 @@
 <table>
   <thead>
     <tr>
+      <th>Created by</th>
       <th>Title</th>
+      <th>Date</th>
       <th>Body</th>
       <th colspan="3"></th>
     </tr>
@@ -14,11 +16,15 @@
   <tbody>
     <% @doubts.each do |doubt| %>
       <tr>
+        <td><%= doubt.user.username %></td>
         <td><%= doubt.title %></td>
+        <td><%= doubt.created_at %></td>
         <td><%= doubt.body %></td>
         <td><%= link_to 'Show', doubt %></td>
-        <td><%= link_to 'Edit', edit_doubt_path(doubt) %></td>
-        <td><%= link_to 'Destroy', doubt, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if doubt.user == current_user %>
+          <td><%= link_to 'Edit', edit_doubt_path(doubt) %></td>
+          <td><%= link_to 'Destroy', doubt, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -27,3 +33,5 @@
 <br>
 
 <%= link_to 'New Doubt', new_doubt_path %>
+
+<%= link_to "Logout", destroy_user_session_path, :method => :delete %>
