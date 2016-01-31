@@ -1,6 +1,8 @@
 class DoubtsController < ApplicationController
+  
   before_action :set_doubt, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_user!
+  
   # GET /doubts
   # GET /doubts.json
   def index
@@ -10,12 +12,19 @@ class DoubtsController < ApplicationController
   # GET /doubts/1
   # GET /doubts/1.json
   def show
-    @offer = Offer.new
-    if current_user == @doubt.user
-      @permission = false
+    
+    if @doubt.privacy? && ((@doubt.user == current_user) || (@doubt.offer.user == current_user))
+        @offer = Offer.new
+        @comment = Comment.new
+        render :show
+    elsif ((@doubt.user == current_user) || (@doubt.offer.user == current_user))
+        @offer = Offer.new
+        @comment = Comment.new
+        render :show
     else
-      @permission = true
+        redirect_to doubts_path
     end
+
   end
 
   # GET /doubts/new
@@ -25,6 +34,9 @@ class DoubtsController < ApplicationController
 
   # GET /doubts/1/edit
   def edit
+    if current_user != @doubt.user
+      redirect_to @doubt
+    end
   end
 
   # POST /doubts
@@ -68,6 +80,20 @@ class DoubtsController < ApplicationController
     end
   end
 
+  def accept_offer
+    @doubt = Doubt.find(params[:doubt_id])
+    @offer = Offer.find(params[:offer_id])
+
+    @doubt.offer = @offer
+
+    if @doubt.update
+      redirect_to @doubt
+    else
+      redirect_to @offer
+    end
+  end
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_doubt
@@ -76,6 +102,6 @@ class DoubtsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def doubt_params
-      params.require(:doubt).permit(:title, :body)
+      params.require(:doubt).permit(:title, :body, :privacy)
     end
 end

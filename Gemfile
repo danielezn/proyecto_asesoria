@@ -25,6 +25,8 @@ gem "mongoid", git: 'git://github.com/mongoid/mongoid.git'
 #Authentication gem to control de users access
 gem 'devise'
 
+gem 'jquery-turbolinks'
+
 #Slug for mongoid
 gem 'mongoid-slug'
 

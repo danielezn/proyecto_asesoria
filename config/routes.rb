@@ -7,10 +7,18 @@ Rails.application.routes.draw do
   devise_for :users
   
   resources :doubts do
-  	resources :offers
+  	resources :offers do
+      get '/conference', to: "conferences#index", as: 'start_conference'
+      post '/conference', to: "conferences#set_doubt_resolved", as: 'set_doubt_resolved'
+    end
+    resources :comments
+    post '/offers/:offer_id', to: "doubts#accept_offer", as: 'accept_offer'
   end
 
-  post '/offers/:id', to: 'offer#accept_offer', as: 'accept_offer'
+  resources :comments do
+        resources :comments
+  end
+  
   #initial Dashboard
   get '/dashboard', to: 'dashboard#index', as: 'dashboard'
 

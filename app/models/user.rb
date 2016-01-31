@@ -38,6 +38,7 @@ class User
   # field :locked_at,       type: Time
   has_many :doubts
   has_many :offers
+  has_many :comments
 
   # function to handle user's login via email or username
   def self.find_for_database_authentication(warden_conditions)

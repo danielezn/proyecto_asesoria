@@ -19,6 +19,12 @@
     <%= f.label :body %><br>
     <%= f.text_field :body %>
   </div>
+  <div class="field">
+    Public
+    <%= f.radio_button(:privacy, "false") %>
+    Private
+    <%= f.radio_button(:privacy, "true") %>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

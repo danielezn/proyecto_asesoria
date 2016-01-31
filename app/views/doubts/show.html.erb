@@ -1,37 +1,34 @@
 <p id="notice"><%= notice %></p>
-
+<%= link_to 'Todas las dudas', doubts_path %>
+  <h1><%= @doubt.title %></h1>
 <p>
-  <strong>Title:</strong>
-  <%= @doubt.title %>
+  <%= @doubt.body %> | Respondida: <%= @doubt.resolved %> | Privacidad: <%= @doubt.privacy %>
 </p>
+<!-- Si la duda ya fue respondida o acordada una conferencia-->
+<% if @doubt.offer? && (@doubt.user == current_user || @doubt.offer.user == current_user)%>
+	
 
-<p>
-  <strong>Body:</strong>
-  <%= @doubt.body? %>
-</p>
 
-<%= link_to 'Edit', edit_doubt_path(@doubt) %> |
-<%= link_to 'Back', doubts_path %>
+	<% if @doubt.resolved? %>
+		<!-- Videoconferencia guardada -->
+		<p><iframe width="560" height="315" src="https://www.youtube.com/embed/qmJ84y4wTq8" frameborder="0" allowfullscreen></iframe></p>
+		<!-- Seccion de comentarios-->
+		<!-- - Formulario para crear comentario-->
+		<%= render partial: "comments/form", locals: {commentable: @doubt} %>
+		<!-- - Mostrar comentarios creados-->
+		<%= render partial: "comments/comment" %>
+	<% else %>
 
-<% if @doubt.offers? %>
-	<h1>Ofertas</h1>
-	<ul>
-		<% @doubt.offers.each do |offer| %>
-			<li>
-				<%= offer.user.username %> - <%=offer.created_at %> - <%= offer.price %> - <%= offer.description %>
-				<% if @doubt.user == current_user %>
-					<%= link_to 'Aceptar', accept_offer_path(offer) %>
-				<% end %>
-				<% if offer.user == current_user %>
-					<%= link_to 'Edit', edit_doubt_offer_path(@doubt,offer) %>
-	        		<%= link_to 'Destroy', doubt_offer_path(@doubt,offer), method: :delete, data: { confirm: 'Are you sure?' } %>
-				<% end %>
-			</li>
-		<%end%>
-	</ul>
-<% end %>
 
-<% if @permission == true %>
-	<h1>Ofertar</h1>
-	<%= render "offers/form" %>
+		<!-- Vamos a la conferencia-->
+		<p><%= link_to 'Ir a conferencia', doubt_offer_start_conference_path(@doubt, @doubt.offer) %></p>
+	<% end %>
+
+
+
+
+
+<% else %>
+	<!-- Si  aun no hay alguna oferta aceptada-->
+	<%= render partial: "offers/offer" %>
 <% end %>
