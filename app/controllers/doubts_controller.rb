@@ -12,19 +12,9 @@ class DoubtsController < ApplicationController
   # GET /doubts/1
   # GET /doubts/1.json
   def show
-    
-    if @doubt.privacy? && ((@doubt.user == current_user) || (@doubt.offer.user == current_user))
         @offer = Offer.new
         @comment = Comment.new
         render :show
-    elsif ((@doubt.user == current_user) || (@doubt.offer.user == current_user))
-        @offer = Offer.new
-        @comment = Comment.new
-        render :show
-    else
-        redirect_to doubts_path
-    end
-
   end
 
   # GET /doubts/new
@@ -91,6 +81,10 @@ class DoubtsController < ApplicationController
     else
       redirect_to @offer
     end
+  end
+
+  def resolved
+    @doubts = Doubt.all
   end
 
 

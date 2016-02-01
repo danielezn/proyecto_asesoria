@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   #Logged users
   devise_for :users
   
+  get '/:solution_id', to: "solutions#index", as: 'solutions'
+
   resources :doubts do
   	resources :offers do
       get '/conference', to: "conferences#index", as: 'start_conference'
@@ -13,8 +15,11 @@ Rails.application.routes.draw do
     end
     resources :comments
     post '/offers/:offer_id', to: "doubts#accept_offer", as: 'accept_offer'
-  end
 
+  end
+  
+  get 'doubts/resolved', to: "doubts#resolved", as: 'resolved'
+  
   resources :comments do
         resources :comments
   end
